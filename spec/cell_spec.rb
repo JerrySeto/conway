@@ -1,4 +1,4 @@
-require './lib/conway'
+require './lib/conway/cell'
 
 RSpec.describe Conway::Cell do
   describe '#alive?' do
