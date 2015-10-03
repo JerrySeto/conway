@@ -8,4 +8,20 @@ RSpec.describe Conway::Cell do
       end
     end
   end
+
+  describe '#current_state' do
+    context 'the cell is alive' do
+      it 'should return :alive' do
+        cell = Conway::Cell.new(alive:true)
+        expect(cell.current_state).to eq(:alive)
+      end
+    end
+
+    context 'the cell is dead' do
+      it 'should return :dead' do
+        cell = Conway::Cell.new(alive:false)
+        expect(cell.current_state).to eq(:dead)
+      end
+    end
+  end
 end
