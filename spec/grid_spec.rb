@@ -1,4 +1,4 @@
-require './lib/conway/grid'
+require './lib/conway'
 require 'pry'
 RSpec.describe Conway::Grid do
   describe '#set_alive' do
@@ -44,6 +44,15 @@ RSpec.describe Conway::Grid do
     it 'should return the correct number of cells when on an edge' do
       grid = Conway::Grid.new(width: 1, height: 1)
       expect(grid.living_neighbours(0 ,0)).to eq(0)
+    end
+  end
+
+  describe '#update_state' do
+    it 'should update each position to the next state depending on whether the cell at that position should be dead or alive' do
+      grid = Conway::Grid.new(width: 1, height: 1)
+      allow_any_instance_of(Conway::Cell).to receive(:next_state).and_return(:alive)
+      grid.update_state
+      expect(grid.current_state).to eq([[true]])
     end
   end
 end

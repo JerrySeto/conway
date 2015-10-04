@@ -1,2 +1,2 @@
-require 'conway/cell'
-require 'conway/grid'
+require_relative './conway/cell'
+require_relative './conway/grid'

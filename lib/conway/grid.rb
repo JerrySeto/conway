@@ -1,9 +1,10 @@
 module Conway
   class Grid
-    def initialize(height:, width:)
+    def initialize(height:, width:, cell_type:Conway::Cell)
       @height = height
       @width = width
-      @position = [[false] * width] * height
+      initialize_grid
+      @cell_type = cell_type
     end
 
     def alive?(x, y)
@@ -24,7 +25,47 @@ module Conway
       end.count
     end
 
+    def update_state
+      @position = next_state
+      @next_state = nil
+    end
+
+    def current_state
+      @position
+    end
+
     private
+
+    def next_state
+      @next_state ||= begin
+        new_position = []
+        @position.each_with_index do |column, i|
+          new_column = []
+          column.each_with_index do |is_alive, j|
+            cell = is_alive ? living_cell : dead_cell
+            new_column << (cell.next_state(living_neighbours(i, j)) == :alive)
+          end
+          new_position << new_column
+        end
+        new_position
+      end
+    end
+
+    def initialize_grid
+      @position = []
+      @width.times do
+        @position << [false] * @height
+      end
+    end
+
+    def living_cell
+      @living_cell ||= @cell_type.new(alive: true)
+    end
+
+    def dead_cell
+      @dead_cell ||= @cell_type.new(alive:false)
+    end
+
     def valid_y(y)
       y + 1 <= @height && y >= 0
     end
@@ -51,7 +92,7 @@ module Conway
     def enumerate_neighbours(x, y)
       rows = [y - 1, y, y + 1].select{|i| valid_y(i) }
       columns = [x - 1, x, x + 1].select{|i| valid_x(i) }
-      rows.product(columns).reject{|i, j| i == x && j == y}
+      columns.product(rows).reject{|i, j| i == x && j == y}
     end
   end
 end
