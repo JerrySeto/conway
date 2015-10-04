@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    label {
+      border:1px solid black;
+      margin:2px;
+      display:inline-block;
+      width:10px;
+      height:10px
+    }
+
+    input[type='checkbox'] {
+      position:absolute;
+      left:-50px;
+      top: -50px
+    }
+
+    input[type=checkbox]:checked ~ label{
+      background: green;
+    }
+  </style>
+</head>
+<body>
+  <form action='/' method='get'>
+    <input type='hidden' name='width' value=<%=@width%> />
+    <input type='hidden' name='height' value=<%=@height%> />
+    <% @grid.current_state.each_with_index do |column, i| %>
+      <div>
+        <% column.each_with_index do |living, j| %>
+          <% id= "grid[#{i}-#{j}]"%>
+          <span>
+            <input type='checkbox' name=<%=id%> id=<%=id %> <% if @grid.alive?(i,j) %>checked='checked' <% end %>/>
+            <label for=<%=id %>></label>
+          </span>
+        <% end %>
+      </div>
+    <% end %>
+    <input type='submit'/>
+  </form>
+  <a href='/?width=10&height=10&grid%5B1-0%5D=on&grid%5B1-2%5D=on&grid%5B2-1%5D=on&grid%5B2-2%5D=on&grid%5B3-1%5D=on'>spaceship</a>
+  <a href='/?width=10&height=10&grid%5B2-2%5D=on&grid%5B2-3%5D=on&grid%5B3-2%5D=on&grid%5B4-5%5D=on&grid%5B5-4%5D=on&grid%5B5-5%5D=on'>beacon</a>
+</body>
+</html>
