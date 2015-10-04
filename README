@@ -1,0 +1,7 @@
+Run this with something like:
+bundle exec ruby app.rb -p 8000
+
+Visit localhost:8000 in a browser.
+
+Click individual boxes or one of the links to set the initial state and click submit to request the next state.
+
